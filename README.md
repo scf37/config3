@@ -2,8 +2,8 @@
 ![Build status](https://travis-ci.org/scf37/config3.svg?branch=master)
 
 This is small configuration library for Scala utilizing Typesafe Config.
-## Design
 
+## Design
 - use typesafe config as backend
 - ability to fail when provided config key is unknown/misspelled
 - ability to print help on available parameters
@@ -12,13 +12,13 @@ This is small configuration library for Scala utilizing Typesafe Config.
 - ability to print loaded parameters with origins on startup 
 
 ## Example output
-Help text:
+#### Help text
 ```
 This is myapp project
 Parameters:
 
-Name               Value         Description
-app.env                             environment to use. Try "dev" or "prod"
+Name                  Value         Description
+myapp.env                           environment to use. Try "dev" or "prod"
                                     if no env specified, things will go horribly wrong!
 myapp.list            [1,2,3]       the list
 myapp.listmap         [a=1,a=2,b=3] the listmap
@@ -27,7 +27,7 @@ myapp.storage_root    "./files"     file storage root
 myapp.web.dev         true          enable development mode
 myapp.web.password                  application password
 ```
-Loaded configuration text:
+#### Loaded configuration text
 ```
 myapp.env            "dev"                    system properties: 1
 myapp.list           [1,2,3]                  reference.conf @ file:/opt/app/conf/reference.conf: 30
