@@ -12,7 +12,7 @@ This is small configuration library for Scala utilizing Typesafe Config.
 - ability to print loaded parameters with origins on startup 
 
 ## Example output
-#### Help text
+#### Help on available parameters
 ```
 This is myapp project
 Parameters:
@@ -27,7 +27,7 @@ myapp.storage_root    "./files"     file storage root
 myapp.web.dev         true          enable development mode
 myapp.web.password                  application password
 ```
-#### Loaded configuration text
+#### Loaded parameters with origins
 ```
 myapp.env            "dev"                    system properties: 1
 myapp.list           [1,2,3]                  reference.conf @ file:/opt/app/conf/reference.conf: 30
