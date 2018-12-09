@@ -68,7 +68,8 @@ import me.scf37.config3.Config3
 object Main {
   def main(args: Array[String]): Unit = {
     // load reference configuration
-    val reference = ConfigFactory.defaultReference()
+    // ConfigFactory.defaultReference() includes system properties and therefore unwanted
+    val reference = ConfigFactory.parseResources("reference.conf")
 
     // there can be many reference.conf classpath-wise so we process keys for our application only
     def isAppConfigKey(key: String) = key.startsWith("myapp.")
@@ -94,7 +95,7 @@ object Main {
         .withFallback(ConfigFactory.systemProperties())
         .withFallback(ConfigFactory.systemEnvironment())
         .withFallback(ConfigFactory.load("myapp.conf"))
-        .withFallback(ConfigFactory.load("reference.conf"))
+        .withFallback(reference)
 
     // ensure all required parameters are set and we have no unknown/misspelled keys starting with myapp.
     val errors = Config3.validate(reference, config, isAppConfigKey)
