@@ -42,7 +42,7 @@ myapp.web.password   ******                   system properties: 3
 ### Update build.sbt
 ```
 resolvers += "Scf37" at "https://dl.bintray.com/scf37/maven/"
-libraryDependencies += "me.scf37.config3" %% "config3" % "1.0.1"
+libraryDependencies += "me.scf37.config3" %% "config3" % "1.0.2"
 ```
 
 ### Define reference.conf
