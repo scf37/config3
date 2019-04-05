@@ -1,5 +1,5 @@
 # Config3
-![Build status](https://travis-ci.org/scf37/config3.svg?branch=master)
+[![Build status](https://travis-ci.org/scf37/config3.svg?branch=master)](https://travis-ci.org/scf37/config3)
 
 This is small configuration library for Scala utilizing Typesafe Config.
 
@@ -42,7 +42,7 @@ myapp.web.password   ******                   system properties: 3
 ### Update build.sbt
 ```
 resolvers += "Scf37" at "https://dl.bintray.com/scf37/maven/"
-libraryDependencies += "me.scf37.config3" %% "config3" % "1.0.2"
+libraryDependencies += "me.scf37.config3" %% "config3" % "1.0.1"
 ```
 
 ### Define reference.conf
@@ -109,3 +109,5 @@ object Main {
   }
 }
 ```
+Also see `me.scf37.config3.Config3Main`
+
