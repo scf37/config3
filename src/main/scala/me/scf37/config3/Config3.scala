@@ -206,14 +206,14 @@ object Config3 extends Config3 {
             None
           else Some(vv.render(ConfigRenderOptions.concise().setJson(false)))
 
-          val help = vv.origin().comments().toArray(Array.empty[String])
+          val help = vv.origin().comments().asScala.toSeq
 
           Some(HelpParam(path, value, help))
       }
     }
 
     Help(
-      help = helpText,
+      help = helpText.toSeq,
       params = params
     )
 
@@ -251,7 +251,7 @@ object Config3 extends Config3 {
     }
 
 
-    errors
+    errors.toSeq
   }
 
   private[config3] def walk(root: ConfigValue, filterKey: String => Boolean): Seq[(String, ConfigValue)] = {
@@ -273,7 +273,7 @@ object Config3 extends Config3 {
 
     doWalk("", root)
 
-    result
+    result.toSeq
   }
 
   override def printConfig(

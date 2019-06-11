@@ -26,7 +26,7 @@ class Config3Test extends FreeSpec {
           case v => s"$path -> ${v.unwrapped()}"
         })
       }
-      result
+      result.toSeq
     }
 
     "collects all values w/o filtering" in {
