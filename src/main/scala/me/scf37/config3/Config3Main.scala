@@ -58,6 +58,7 @@ object Config3Main {
         .withFallback(ConfigFactory.systemEnvironment())
         .withFallback(ConfigFactory.parseResources(appConfigFile))
         .withFallback(reference)
+        .resolve()
 
     // ensure all required parameters are set and we have no unknown/misspelled keys.
     val errors = Config3.validate(reference, config, isAppConfigKey)
