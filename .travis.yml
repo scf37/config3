@@ -14,7 +14,7 @@ scala:
 - 2.12.7
 
 jdk:
-- oraclejdk8
+- openjdk8
 
 script:
 - git config --local user.email "scf370@gmail.com"
