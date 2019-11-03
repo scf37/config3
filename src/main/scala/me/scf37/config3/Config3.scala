@@ -122,9 +122,6 @@ trait Config3 {
   )
 }
 
-
-
-
 /**
   * Implementation of Config3 API. See trait scaladoc.
   */

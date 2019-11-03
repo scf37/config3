@@ -56,7 +56,7 @@ object Config3Main {
       cmdlineConfig
         .withFallback(ConfigFactory.systemProperties())
         .withFallback(ConfigFactory.systemEnvironment())
-        .withFallback(ConfigFactory.load(appConfigFile))
+        .withFallback(ConfigFactory.parseResources(appConfigFile))
         .withFallback(reference)
 
     // ensure all required parameters are set and we have no unknown/misspelled keys.
