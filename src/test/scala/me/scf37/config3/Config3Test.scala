@@ -6,8 +6,7 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigObject
 import com.typesafe.config.ConfigParseOptions
-import me.scf37.config3.Config3.ArgumentsParseError
-import me.scf37.config3.Config3.ConfigValidationError
+import me.scf37.config3.Config3.{ArgumentsParseError, ConfigValidationError, Help, HelpParam}
 import org.scalatest.FreeSpec
 
 import scala.collection.mutable
@@ -88,6 +87,9 @@ class Config3Test extends FreeSpec {
     "works for correct simple arguments" in {
       check("a=42", "-a", "42")
       check("a=1,b.c=2", "-a", "1", "-b.c", "2")
+    }
+    "works for correct arguments with spaces" in {
+      check("a=4 2", "-a", "4 2")
     }
     "works for correct arrays" in {
       check("a=[1,2,3]", "-a", "[1, 2, 3]")
@@ -180,7 +182,6 @@ class Config3Test extends FreeSpec {
     assert(printedConfig.contains("[1,2,3]"))
     assert(printedConfig.contains("test.conf"))
     assert(printedConfig.contains("inline origin"))
-    println(printedConfig)
     ConfigFactory.systemProperties()
       .withFallback(ConfigFactory.load("app.conf"))
   }

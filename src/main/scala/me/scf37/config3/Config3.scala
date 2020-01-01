@@ -126,48 +126,56 @@ trait Config3 {
   * Implementation of Config3 API. See trait scaladoc.
   */
 object Config3 extends Config3 {
-  private def maxOpt(coll: Iterable[Int], ifEmpty: Int): Int = coll.reduceOption(_ max _).getOrElse(ifEmpty)
-  private def fill(len: Int): String = new String(Array.fill(len)(' '))
-  private def padRight(s: String, to: Int): String = s + fill(Math.max(0, to - s.length))
-
   private def renderConfig(config: Config3#PrintedConfig): String = {
     val table = config.lines.map { line =>
-      (
+      Seq(
         line.name,
         if (config.isParamSecret(line.name)) "******" else line.value.render(ConfigRenderOptions.concise()),
         line.value.origin().description
       )
     }
-    val maxColnum1Len = maxOpt(table.map(_._1.length), 0)
-    val maxColnum2Len = maxOpt(table.map(_._2.length), 0)
 
-    table.map { row =>
-      padRight(row._1, maxColnum1Len) + padRight(row._2, maxColnum2Len) + row._3
-    }.mkString("\n")
+    this.table(Seq("Name", "Value", "Origin"), table)
   }
 
   private def renderHelp(help: Config3#Help): String = {
-    val maxParamLen = maxOpt(help.params.map(_.name.length), 0)
-    val maxValueLen = Math.min(30, maxOpt(help.params.map(_.value.map(_.length).getOrElse(0)), 0))
-
-    def renderParameter(p: Config3#HelpParam): String = {
-
-      val namevalue = padRight(p.name, maxParamLen) +
-        " " + padRight(p.value.getOrElse(""), maxValueLen) + " "
-
-      namevalue + p.description.headOption.getOrElse("") +
-        p.description.drop(1).map("\n" + fill(namevalue.length) + _).mkString
-
-    }
-
     val sb = new mutable.StringBuilder()
     sb ++= help.help.mkString("\n")
     sb ++= "\n"
-    sb ++= padRight("Name", maxParamLen + 1) + padRight("Value", maxValueLen) + " Description\n"
-
-    sb ++= help.params.sortBy(p => (p.value.isDefined, p.name)).map(renderParameter).mkString("\n")
+    sb ++= table(Seq("Name", "Value", "Description"),
+      help.params.sortBy(p => (p.value.isDefined, p.name)).map(p => Seq(p.name, p.value.getOrElse(""), p.description.mkString("\n")))
+    )
 
     sb.mkString
+  }
+
+  private def table(headers: Seq[String], rows: Seq[Seq[String]]): String = {
+    def fill(len: Int, char: Char = ' '): String = new String(Array.fill(len)(char))
+    def padRight(s: String, to: Int): String = s + fill(Math.max(0, to - s.length))
+
+    val colCount = Math.max(headers.size, rows.headOption.map(_.size).getOrElse(0))
+    val data = headers +: rows
+    val cols = (0 until colCount).map { col =>
+      data.map(_.applyOrElse(col, (_: Int) => "").split("\n").map(_.length).max).max + 2
+    }
+
+    val data2 =
+      if (headers.nonEmpty)
+        data.head +: (Seq(fill(cols.sum - 2, '-')) +: data.tail)
+      else
+        data
+
+    data2.map { row =>
+      row.zipWithIndex.map { case (value, col) =>
+        val valueParts = value.split("\n").toList match {
+          case h :: t => padRight(h, cols(col)) :: t.map(v => fill(cols.take(col).sum) + padRight(v, cols(col)))
+          case _ => throw new IllegalStateException("should not happen")
+        }
+
+        valueParts.mkString("\n")
+      }.mkString("")
+    }.mkString("\n")
+
   }
 
   override def parse(args: Array[String]): Either[ArgumentsParseError, Config] = {
@@ -180,7 +188,17 @@ object Config3 extends Config3 {
 
       if (i + 1 == args.length) return Left(ArgumentsParseError(i, key, "No value provided"))
       val value = args(i + 1)
-      sb ++= s"${key.drop(1)}=$value\n"
+      // typical use case: string value containing spaces
+      val hocon =
+        if (value.contains(" ")
+          && !value.contains("\"")
+          && !value.trim.startsWith("[")
+          && !value.trim.startsWith("{"))
+          s"""${key.drop(1)}=\"$value\"\n"""
+        else
+          s"""${key.drop(1)}=$value\n"""
+
+      sb ++= hocon
       i += 2
     }
 
