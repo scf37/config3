@@ -201,8 +201,6 @@ object Config3 extends Config3 {
       sb ++= hocon
       i += 2
     }
-    println(args.toList)
-    println(sb.mkString)
 
     Right(ConfigFactory.parseString(sb.mkString, ConfigParseOptions.defaults().setOriginDescription("cmdline")))
   }

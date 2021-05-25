@@ -23,7 +23,7 @@ val config3 = project.in(file("."))
 
       scalacOptions := compilerOptions,
 
-      resourceGenerators in Compile += buildProperties,
+      Compile / resourceGenerators += buildProperties,
 
       publishSettings
     )
@@ -32,7 +32,7 @@ lazy val publishSettings = Seq(
       organization := "me.scf37",
       publishMavenStyle := true,
       description := "Scala configuration library",
-      sources in (Compile, doc) := Seq.empty,
+      Compile / doc / sources := Seq.empty,
       scmInfo := Some(
             ScmInfo(
                   url("https://github.com/scf37/config3"),
