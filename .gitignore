@@ -11,4 +11,5 @@ rebel.xml
 /logs
 .idea
 *.iml
-.secret
+/.secret
+/.bsp

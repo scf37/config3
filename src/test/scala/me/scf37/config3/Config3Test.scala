@@ -7,11 +7,11 @@ import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigObject
 import com.typesafe.config.ConfigParseOptions
 import me.scf37.config3.Config3.{ArgumentsParseError, ConfigValidationError, Help, HelpParam}
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import scala.collection.mutable
 
-class Config3Test extends FreeSpec {
+class Config3Test extends AnyFreeSpec {
   private def filterKey(pathPrefixes: Set[String]): String => Boolean = p =>
     pathPrefixes.isEmpty || pathPrefixes.exists(pp => p == pp || p.startsWith(pp + "."))
   "walk" - {
@@ -90,6 +90,12 @@ class Config3Test extends FreeSpec {
     }
     "works for correct arguments with spaces" in {
       check("a=4 2", "-a", "4 2")
+    }
+    "works for quoted symbols" in {
+      check("a=\"][}{\"", "-a", "\"][}{\"")
+    }
+    "works for quoted quotes" in {
+      check("a=\"\\\"\"", "-a", "\"\\\"\"")
     }
     "works for correct arrays" in {
       check("a=[1,2,3]", "-a", "[1, 2, 3]")

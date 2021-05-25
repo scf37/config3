@@ -17,11 +17,9 @@ lazy val compilerOptions = Seq(
 val config3 = project.in(file("."))
     .settings(
       name := "config3",
-      resolvers += "Scf37" at "https://dl.bintray.com/scf37/maven/",
-
-      crossScalaVersions := Seq("2.12.10", "2.13.1"),
-      libraryDependencies += "com.typesafe" % "config" % "1.3.2",
-      libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % "test",
+      crossScalaVersions := Seq("2.12.10", "2.13.1", "3.0.0"),
+      libraryDependencies += "com.typesafe" % "config" % "1.4.1",
+      libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % "test",
 
       scalacOptions := compilerOptions,
 
