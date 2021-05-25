@@ -19,4 +19,4 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
     - name: Run tests
-      run: sbt test
+      run: sbt +test
